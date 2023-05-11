@@ -88,8 +88,16 @@
 
     \addcontentsline{toc}{section}{Question #1}
 
-    \IfBlankF{#3}{\sol{#3}{10}}
-    \IfBlankF{#4}{\prf{#4}{10}}
+    \IfNoValueF{#3} {
+        \IfBlankF{#3} {
+            \sol{#3}{10}
+        }
+    }
+    \IfNoValueF{#4} {
+        \IfBlankF{#4} {
+            \sol{#4}{10}
+        }
+    }
 }
 
 % Command for subquestions (e.g. a) b) c) etc)
@@ -106,9 +114,17 @@
     \end{mdframed}
 
     \addcontentsline{toc}{subsection}{#1)}
-    
-    \IfBlankF{#3}{\sol{#3}{25}}
-    \IfBlankF{#4}{\prf{#4}{25}}
+
+    \IfNoValueF{#3} {
+        \IfBlankF{#3} {
+            \sol{#3}{25}
+        }
+    }
+    \IfNoValueF{#4} {
+        \IfBlankF{#4} {
+            \sol{#4}{25}
+        }
+    }
 }
 
 % Command for subsubquestions (e.g. i. ii. iii. etc)
@@ -125,9 +141,17 @@
     \end{mdframed}
 
     \addcontentsline{toc}{subsubsection}{#1.}
-    
-    \IfBlankF{#3}{\sol{#3}{40}}
-    \IfBlankF{#4}{\prf{#4}{40}}
+
+    \IfNoValueF{#3} {
+        \IfBlankF{#3} {
+            \sol{#3}{40}
+        }
+    }
+    \IfNoValueF{#4} {
+        \IfBlankF{#4} {
+            \sol{#4}{40}
+        }
+    }
 }
 
 % Command to make sections have connecting dots in contents
