@@ -1,0 +1,147 @@
+\documentclass[12pt]{article}
+\title{
+    \textbf{PAPER — Assignment n} \\
+    \large{University of Auckland}
+}
+\author{Aidan Webster \qquad aweb904@aucklanduni.ac.nz}
+\date{\today}
+
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{mdframed}
+\usepackage{tocloft}
+\usepackage{ifthen}
+\usepackage{xparse}
+
+% Short commands for common number systems
+\newcommand{\N}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{R}}
+
+% Shorthand commands for all braces
+\newcommand\set[1]{\left\lbrace #1 \right\rbrace} % Curly braces
+\newcommand\abs[1]{\left| #1 \right|} % Absolute value
+\newcommand\brac[1]{\left[ #1 \right]} % Square brackets
+\newcommand\parens[1]{\left( #1 \right)} % Normal brackets
+
+% Command for solution box
+\DeclareDocumentCommand\sol{ m g } {
+    % #1 - solution
+    % #2 - leftmargin
+     
+    \IfNoValueTF{#2} {
+        \begin{mdframed}
+            \emph{Solution. \\[1pt]} #1
+        \end{mdframed}
+    } {
+        \begin{mdframed}[leftmargin=#2]
+            \emph{\underline{Solution}. \\[1pt]} #1
+        \end{mdframed}
+    }
+}
+
+% Command for proof box
+\DeclareDocumentCommand\prf{ m g } {
+    % #1 - solution
+    % #2 - leftmargin
+
+    \IfNoValueTF{#2} {
+        \begin{mdframed}
+            \begin{proof}[\underline{Proof}]
+                $ $\\[3pt] #1
+            \end{proof}
+        \end{mdframed}
+    } {
+        \begin{mdframed}[leftmargin=#2]
+            \begin{proof}[\underline{Proof}]
+                $ $\\[3pt] #1
+            \end{proof}
+        \end{mdframed}
+    }
+}
+
+% Create sections that can be inline
+\makeatletter
+\newcommand\inlinesection{\@ifstar\mystarsec\mynostarsec}
+\makeatother
+
+\newcommand\mystarsec[1]{
+\ifhmode\unskip\fi\textbf{#1}}
+\newcommand\mynostarsec[1]{
+\ifhmode\unskip\fi\refsetepcounter{section}\textbf{\thesection. #1}}
+
+% Command for question
+\DeclareDocumentCommand\question{ m m g g } {
+    % #1 - Question num/letter
+    % #2 - Question
+    % #3 - Solution
+    % #4 - Proof
+
+    \noindent
+    \begin{mdframed}[hidealllines=true, leftmargin=0pt, innertopmargin=0pt, innerbottommargin=0pt, skipabove=0pt, skipbelow=0pt]        
+        \makebox[-5pt][r]{\Large{#1)}}
+        \inlinesection*{\textnormal{\emph{\large{#2}}}}
+    \end{mdframed}
+
+    \addcontentsline{toc}{section}{Question #1}
+
+    \IfBlankF{#3}{\sol{#3}{10}}
+    \IfBlankF{#4}{\prf{#4}{10}}
+}
+
+% Command for subquestions (e.g. a) b) c) etc)
+\DeclareDocumentCommand\subquestion{ m m g g } {
+    % #1 - Question num/letter
+    % #2 - Question
+    % #3 - Solution
+    % #4 - Proof
+
+    \noindent
+    \begin{mdframed}[hidealllines=true, leftmargin=15pt, innertopmargin=0pt, innerbottommargin=0pt, skipabove=0pt, skipbelow=0pt]        
+        \makebox[-5pt][r]{\large{#1)}}
+        \inlinesection*{\textnormal{\emph{\normalsize{#2}}}}
+    \end{mdframed}
+
+    \addcontentsline{toc}{subsection}{#1)}
+    
+    \IfBlankF{#3}{\sol{#3}{25}}
+    \IfBlankF{#4}{\prf{#4}{25}}
+}
+
+% Command for subsubquestions (e.g. i. ii. iii. etc)
+\DeclareDocumentCommand\subsubquestion{ m m g g } {    
+    % #1 - Question num/letter
+    % #2 - Question
+    % #3 - Solution
+    % #4 - Proof
+
+    \noindent
+    \begin{mdframed}[hidealllines=true, leftmargin=30pt, innertopmargin=0pt, innerbottommargin=0pt, skipabove=0pt, skipbelow=0pt]  
+        \makebox[-5pt][r]{\normalsize{#1)}}
+        \inlinesection*{\textnormal{\emph{\small{#2}}}}
+    \end{mdframed}
+
+    \addcontentsline{toc}{subsubsection}{#1.}
+    
+    \IfBlankF{#3}{\sol{#3}{40}}
+    \IfBlankF{#4}{\prf{#4}{40}}
+}
+
+% Command to make sections have connecting dots in contents
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+
+\begin{document}
+\maketitle
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+% Questions and Answers
+
+\end{document}
