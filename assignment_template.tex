@@ -63,6 +63,20 @@
     }
 }
 
+% Command for centered outlined box
+\DeclareDocumentCommand\widebox{ m } {
+    % #1 - Content
+
+    \makebox[\textwidth + 26pt][r] {
+        \fbox{
+            % Default textwidth
+            \parbox{426pt} {
+                #1 
+            }
+        }
+    }
+}
+
 % Create sections that can be inline
 \makeatletter
 \newcommand\inlinesection{\@ifstar\mystarsec\mynostarsec}
