@@ -1,0 +1,243 @@
+\documentclass[12pt]{article}
+\title{
+    \textbf{COMPSCI130 — Assignment 3} \\
+    \large{University of Auckland}
+}
+\author{Aidan Webster \qquad aweb904@aucklanduni.ac.nz}
+\date{\today}
+
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{mdframed}
+\usepackage{tocloft}
+\usepackage{ifthen}
+\usepackage{xparse}
+\usepackage{calc}
+\usepackage[nomessages]{fp}
+
+% Short commands for common number systems
+\newcommand{\N}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{R}}
+
+% Shorthand commands for all braces
+\newcommand\set[1]{\left\lbrace #1 \right\rbrace} % Curly braces
+\newcommand\abs[1]{\left| #1 \right|} % Absolute value
+\newcommand\brac[1]{\left[ #1 \right]} % Square brackets
+\newcommand\parens[1]{\left( #1 \right)} % Normal brackets
+
+% Command for solution box
+\DeclareDocumentCommand\sol{ m g } {
+    % #1 - solution
+    % #2 - leftmargin
+     
+    \IfNoValueTF{#2} {
+        \begin{mdframed}
+            \emph{Solution. \\[1pt]} #1
+        \end{mdframed}
+    } {
+        \begin{mdframed}[leftmargin=#2]
+            \emph{\underline{Solution}. \\[1pt]} #1
+        \end{mdframed}
+    }
+}
+
+% Command for proof box
+\DeclareDocumentCommand\prf{ m g } {
+    % #1 - solution
+    % #2 - leftmargin
+
+    \IfNoValueTF{#2} {
+        \begin{mdframed}
+            \begin{proof}[\underline{Proof}]
+                $ $\\[3pt] #1
+            \end{proof}
+        \end{mdframed}
+    } {
+        \begin{mdframed}[leftmargin=#2]
+            \begin{proof}[\underline{Proof}]
+                $ $\\[3pt] #1
+            \end{proof}
+        \end{mdframed}
+    }
+}
+
+% Command for centered outlined box
+\DeclareDocumentCommand\widebox{ m } {
+    % #1 - Content
+
+    \makebox[\textwidth + 26pt][r] {
+        \fbox{
+            % Default textwidth
+            \parbox{426pt} {
+                #1 
+            }
+        }
+    }
+}
+
+% Create sections that can be inline
+\makeatletter
+\newcommand\inlinesection{\@ifstar\mystarsec\mynostarsec}
+\makeatother
+
+\newcommand\mystarsec[1]{
+\ifhmode\unskip\fi\textbf{#1}}
+\newcommand\mynostarsec[1]{
+\ifhmode\unskip\fi\refsetepcounter{section}\textbf{\thesection. #1}}
+
+% Command for question
+\DeclareDocumentCommand\question{ m m g g } {
+    % #1 - Question num/letter
+    % #2 - Question
+    % #3 - Solution
+    % #4 - Proof
+
+    \noindent
+    \begin{mdframed}[hidealllines=true, leftmargin=0pt, innertopmargin=0pt, innerbottommargin=0pt, skipabove=0pt, skipbelow=0pt]        
+        \makebox[-5pt][r]{\Large{#1)}}
+        \inlinesection*{\textnormal{\large{#2}}}
+    \end{mdframed}
+
+    \addcontentsline{toc}{section}{Question #1}
+
+    \IfNoValueF{#3} {
+        \IfBlankF{#3} {
+            \sol{#3}{10}
+        }
+    }
+    \IfNoValueF{#4} {
+        \IfBlankF{#4} {
+            \sol{#4}{10}
+        }
+    }
+}
+
+% Command for subquestions (e.g. a) b) c) etc)
+\DeclareDocumentCommand\subquestion{ m m g g } {
+    % #1 - Question num/letter
+    % #2 - Question
+    % #3 - Solution
+    % #4 - Proof
+
+    \noindent
+    \begin{mdframed}[hidealllines=true, leftmargin=15pt, innertopmargin=0pt, innerbottommargin=0pt, skipabove=0pt, skipbelow=0pt]        
+        \makebox[-5pt][r]{\large{#1)}}
+        \inlinesection*{\textnormal{\normalsize{#2}}}
+    \end{mdframed}
+
+    \addcontentsline{toc}{subsection}{#1)}
+
+    \IfNoValueF{#3} {
+        \IfBlankF{#3} {
+            \sol{#3}{25}
+        }
+    }
+    \IfNoValueF{#4} {
+        \IfBlankF{#4} {
+            \sol{#4}{25}
+        }
+    }
+}
+
+% Command for subsubquestions (e.g. i. ii. iii. etc)
+\DeclareDocumentCommand\subsubquestion{ m m g g } {    
+    % #1 - Question num/letter
+    % #2 - Question
+    % #3 - Solution
+    % #4 - Proof
+
+    \noindent
+    \begin{mdframed}[hidealllines=true, leftmargin=30pt, innertopmargin=0pt, innerbottommargin=0pt, skipabove=0pt, skipbelow=0pt]  
+        \makebox[-5pt][r]{\normalsize{#1)}}
+        \inlinesection*{\textnormal{\small{#2}}}
+    \end{mdframed}
+
+    \addcontentsline{toc}{subsubsection}{#1.}
+
+    \IfNoValueF{#3} {
+        \IfBlankF{#3} {
+            \sol{#3}{40}
+        }
+    }
+    \IfNoValueF{#4} {
+        \IfBlankF{#4} {
+            \sol{#4}{40}
+        }
+    }
+}
+
+% Command to make sections have connecting dots in contents
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+
+\begin{document}
+\maketitle
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+% Questions and Answers
+\question{1}{Functions}
+\subquestion{a}{Let $X = \set{1,2,3,4}$ and $Y = \set{a,b,c,d}$. State with reason which of the rules defined below is (or is not) a function with domain $X$ and codomain $Y$.}
+\subsubquestion{i}{$f(4) = a, \ f(2) = d, \ f(1) = c, \ f(3) = b$}
+\subsubquestion{ii}{$g(3) = a, \ g(4) = d, \ g(1) = \ c$}
+\subsubquestion{iii}{$h(2) = 3, \ h(3) = 1, \ h(1) = 4, \ h(4) = 2$}
+\subsubquestion{iv}{$i(4) = c, \ i(1) = b, \ i(2) = a, \ i(3) = d, \ i(4) = a$}
+
+\question{2}{Limits}
+\subquestion{a}{Find the following limits. Explain your answer.}
+\subsubquestion{i}{$\lim\limits_{n \rightarrow \infty}{\frac{2n}{n \log_{2}{\parens{\frac{1}{n}}}}}$}
+\subsubquestion{ii}{$\lim\limits_{n \rightarrow \infty}{\frac{\sqrt{n^5 + 4n + 5} - \sqrt{5n^6 + 3n}}{4n^3 + 81n + 64}}$}
+\subsubquestion{iii}{$\lim\limits_{n \rightarrow \infty}{\frac{3^n + n^9}{7^n + n^2 + 5}}$}
+\subsubquestion{iv}{$\lim\limits_{n \rightarrow \infty}{\frac{4n + 3}{25 - 5^{\frac{4n + 3}{n^2 + 5n} + 2}}}$}
+
+\question{3}{Algorithms}
+\subquestion{a}{Consider the following algorithm: \\
+    \widebox{        
+        \textbf{Input: } A positive natural number $n$.
+        \begin{enumerate}
+            \item [1.] If $n \ \% \ 3 = 0$, output $n$ and stop. Otherwise, go to Step 2.
+            \item [2.] If $n$ is even, replace $n$ with $n + 1$ and go back to $1.$ Otherwise, go to Step 3.
+            \item [3.] Replace $n$ with $n + 2$ and go to Step 1.
+        \end{enumerate}  
+    } \\
+    Will this algorithm run forever? Explain why or why not.
+}
+\subquestion{b}{Consider two algorithms, called \textbf{Algorithm A} and \textbf{Algorithm B} with the following runtimes:
+\begin{gather*}
+    \textbf{AlgorithmASteps}(n) = n^{10} + 4n + \log_{2}(n) \\
+    \textbf{AlgorithmBSteps}(n) = 5 \log_{2}(n) + 2^{n}
+\end{gather*}
+}
+\subsubquestion{i}{Find the run times for each algorithm for 
+$n = 2$ and $n = 8$.}
+\subsubquestion{ii}{Which algorithm is more efficient when 
+$n < 10$?}
+\subsubquestion{iii}{Which algorithm is more efficient for very large values of 
+$n$? Explain your answer.}
+
+\newpage
+
+\question{4}{Graphs}
+\noindent In lectures, we looked at complete bipartite graphs. Here, we will look at bipartite graphs that are not necessarily complete. A bipartite graph is a simple graph whose vertex set
+$V$ can be split into two disjoint nonempty sets
+$V_{1}$ and $V_{2}$ for which $V_{1} \cup V_{2} = V$
+so that every edge in the graph connects a vertex in
+$V_{1}$ with a vertex in $V_{2}$.
+\subquestion{a}{Draw two different bipartite graphs, each containing 7 vertices in one set and 2 vertices in another set.}
+\subquestion{b}{Consider the following graph $G$:
+Is $G$ bipartite? Justify your answer either by drawing $G$ as a bipartite graph with two distinct sets of vertices, or by explaining why $G$ cannot be bipartite.}
+\subquestion{c}{San draws a graph and asks Mika if it is bipartite. Mika says the graph is not bipartite because it contains the subgraph, 
+$C_3$. Is Mika correct? Can a graph with $C_3$ as a subgraph be bipartite? Explain your answer.}
+\subquestion{d}{San draws another graph. This time he notices that the graph contains the subgraph 
+$C_4$ and assumes that the graph he has drawn cannot be bipartite. Is he correct? Explain your answers.}
+\subquestion{e}{In general, come up with a rule for determining whether a graph with a subgraph 
+$C_n$ is bipartite. Explain your answer.}
+
+\end{document}
