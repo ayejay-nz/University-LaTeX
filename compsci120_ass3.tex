@@ -1,6 +1,6 @@
 \documentclass[12pt]{article}
 \title{
-    \textbf{COMPSCI130 — Assignment 3} \\
+    \textbf{PAPER — Assignment n} \\
     \large{University of Auckland}
 }
 \author{Aidan Webster \qquad aweb904@aucklanduni.ac.nz}
@@ -13,8 +13,6 @@
 \usepackage{tocloft}
 \usepackage{ifthen}
 \usepackage{xparse}
-\usepackage{calc}
-\usepackage[nomessages]{fp}
 
 % Short commands for common number systems
 \newcommand{\N}{\mathbb{R}}
@@ -99,7 +97,7 @@
     \noindent
     \begin{mdframed}[hidealllines=true, leftmargin=0pt, innertopmargin=0pt, innerbottommargin=0pt, skipabove=0pt, skipbelow=0pt]        
         \makebox[-5pt][r]{\Large{#1)}}
-        \inlinesection*{\textnormal{\large{#2}}}
+        \inlinesection*{\textnormal{\emph{\large{#2}}}}
     \end{mdframed}
 
     \addcontentsline{toc}{section}{Question #1}
@@ -126,7 +124,7 @@
     \noindent
     \begin{mdframed}[hidealllines=true, leftmargin=15pt, innertopmargin=0pt, innerbottommargin=0pt, skipabove=0pt, skipbelow=0pt]        
         \makebox[-5pt][r]{\large{#1)}}
-        \inlinesection*{\textnormal{\normalsize{#2}}}
+        \inlinesection*{\textnormal{\emph{\normalsize{#2}}}}
     \end{mdframed}
 
     \addcontentsline{toc}{subsection}{#1)}
@@ -153,7 +151,7 @@
     \noindent
     \begin{mdframed}[hidealllines=true, leftmargin=30pt, innertopmargin=0pt, innerbottommargin=0pt, skipabove=0pt, skipbelow=0pt]  
         \makebox[-5pt][r]{\normalsize{#1)}}
-        \inlinesection*{\textnormal{\small{#2}}}
+        \inlinesection*{\textnormal{\emph{\small{#2}}}}
     \end{mdframed}
 
     \addcontentsline{toc}{subsubsection}{#1.}
@@ -172,8 +170,12 @@
 
 % Command to make sections have connecting dots in contents
 \renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
-
+                   
+% Command to make sections have connecting dots in contents
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+                    
 \begin{document}
+% \nocite{*}
 \maketitle
 
 \newpage
@@ -186,29 +188,113 @@
 \question{1}{Functions}
 \subquestion{a}{Let $X = \set{1,2,3,4}$ and $Y = \set{a,b,c,d}$. State with reason which of the rules defined below is (or is not) a function with domain $X$ and codomain $Y$.}
 \subsubquestion{i}{$f(4) = a, \ f(2) = d, \ f(1) = c, \ f(3) = b$}
+\sol{
+    $f$ has domain of $X$ as it maps every value of $X$ to a value in $Y$. \\
+    $f$ also has a codomain $Y$ as every value in $Y$ is mapped to by $f$.
+}{40pt}
+
 \subsubquestion{ii}{$g(3) = a, \ g(4) = d, \ g(1) = \ c$}
+\sol{
+    $g$ does not have domain of $X$ as it does not map every value of $X$ to a value in $Y$. \\
+    $g$ also does not have a codomain $Y$ as every value in $Y$ is not mapped to by $g$.
+}{40pt}
+
 \subsubquestion{iii}{$h(2) = 3, \ h(3) = 1, \ h(1) = 4, \ h(4) = 2$}
+\sol{
+    $h$ has domain of $X$ as it maps every value of $X$ to a value in $X$. \\
+    $h$ does not have a codomain of $Y$ (but rather $X$), as it maps every value in $X$, not $Y$.
+}{40pt}
+
+\newpage
+
 \subsubquestion{iv}{$i(4) = c, \ i(1) = b, \ i(2) = a, \ i(3) = d, \ i(4) = a$}
+\sol{
+    $i$ has domain of $X$ as it maps every value of $X$ to a value in $Y$. \\
+    $i$ does not a codomain of $Y$ as every value in $Y$ is not mapped to by $i$ (does not map to d).
+}{40pt}
+
+\newpage
 
 \question{2}{Limits}
 \subquestion{a}{Find the following limits. Explain your answer.}
+
 \subsubquestion{i}{$\lim\limits_{n \rightarrow \infty}{\frac{2n}{n \log_{2}{\parens{\frac{1}{n}}}}}$}
+\sol{
+   $\lim\limits_{n \rightarrow \infty}{\frac{2n}{n \log_{2}{\parens{\frac{1}{n}}}}} = $
+   $\lim\limits_{n \rightarrow \infty}{\frac{2}{\log_{2}{\parens{\frac{1}{n}}}}}$ \\
+   $= \lim\limits_{n \rightarrow \infty}{\frac{2}{\log_{2}{\parens{n^{-1}}}}}$ \\
+   $= \lim\limits_{n \rightarrow \infty}{-\frac{2}{\log_{2}{\parens{n}}}}$ \\
+   $= -2 \lim\limits_{n \rightarrow \infty}{\frac{1}{\log_{2}{\parens{n}}}}$ \\
+   $= -2\frac{\lim_{n \rightarrow \infty}{1}}{\lim_{n \rightarrow \infty}{\log_{2}{n}}}$ \\
+   $= -2 \cdot \frac{1}{\infty} = -2 \cdot 0$ \\
+   $= 0$
+}{40pt}
+
 \subsubquestion{ii}{$\lim\limits_{n \rightarrow \infty}{\frac{\sqrt{n^5 + 4n + 5} - \sqrt{5n^6 + 3n}}{4n^3 + 81n + 64}}$}
+\sol{
+    $\lim\limits_{n \rightarrow \infty}{\frac{\sqrt{n^5 + 4n + 5} - \sqrt{5n^6 + 3n}}{4n^3 + 81n + 64}} =$ \\
+    $= \lim\limits_{n \rightarrow \infty}{\frac{n^3 \sqrt{\frac{1}{n} + 4\frac{1}{n^5} + 5 \frac{1}{n^6}} - n^3 \sqrt{5 + 3 \frac{1}{n^5}}}{n^3(4 + 81 \frac{1}{n^2} + 64 \frac{1}{n^3})}}$ \\
+    $= \lim\limits_{n \rightarrow \infty}{\frac{\sqrt{\frac{1}{n} + 4\frac{1}{n^5} + 5 \frac{1}{n^6}} - \sqrt{5 + 3 \frac{1}{n^5}}}{4 + 81 \frac{1}{n^2} + 64 \frac{1}{n^3}}}$ \\
+    $= \lim\limits_{n \rightarrow \infty}{\frac{\sqrt{0 + 4 \cdot 0 + 5 \cdot 0} - \sqrt{5 + 3 \cdot 0}}{4 + 81 \cdot 0 + 64 \cdot 0}}$ \\
+    $= \lim\limits_{n \rightarrow \infty}{\frac{\sqrt{0} - \sqrt{5}}{4}}$ \\
+    $= - \frac{\sqrt{5}}{4}$
+}{40pt}
+
+\newpage
+
 \subsubquestion{iii}{$\lim\limits_{n \rightarrow \infty}{\frac{3^n + n^9}{7^n + n^2 + 5}}$}
+\sol{
+    $\lim\limits_{n \rightarrow \infty}{\frac{3^n + n^9}{7^n + n^2 + 5}} = $
+    $\lim\limits_{n \rightarrow \infty}{\frac{\frac{3^n}{7^n} + \frac{n^9}{7^n}}{\frac{7^n}{7^n} + \frac{n^2}{7^n} + \frac{5}{7^n}}}$ \\
+    $= \lim\limits_{n \rightarrow \infty}{\frac{\parens{\frac{3}{7}}^n + \frac{n^9}{7^n}}{1 + \frac{n^2}{7^n} + \frac{5}{7^n}}}$ \\
+    $= \frac{\lim_{x \rightarrow \infty}{\brac{\parens{\frac{3}{7}}^n + \frac{n^9}{7^n}}}}{\lim_{x \rightarrow \infty}{\brac{1 + \frac{n^2}{7^n} + \frac{5}{7^n}}}}$ \\
+    $= \frac{0 + 0}{1 + 0 + 0} = \frac{0}{1}$ \\
+    $= 0$
+}{40pt}
+
 \subsubquestion{iv}{$\lim\limits_{n \rightarrow \infty}{\frac{4n + 3}{25 - 5^{\frac{4n + 3}{n^2 + 5n} + 2}}}$}
+\sol{
+    $\lim\limits_{n \rightarrow \infty}{\frac{4n + 3}{25 - 5^{\frac{4n + 3}{n^2 + 5n} + 2}}} =$
+    $\lim\limits_{n \rightarrow \infty}{\frac{4n + 3}{25 - 5^2 \cdot 5^\frac{4n + 3}{n^2 + 5n}}}$ \\
+    $= \lim\limits_{n \rightarrow \infty}{\frac{4n + 3}{25 \parens{1 - 5^\frac{4n + 3}{n^2 + 5n}}}}$ \\
+    \newpage
+    Note: $\lim\limits_{n \rightarrow \infty}{\frac{4n + 3}{n^2 + 5n}} = \lim\limits_{n \rightarrow \infty}{\frac{n^2 \cdot \brac{4 \cdot \frac{1}{n} + 3 \cdot \frac{1}{n^2}}}{{n^2 \cdot \brac{1 + 5 \cdot \frac{1}{n}}}}}$ \\
+    $= \lim\limits_{n \rightarrow \infty}{\frac{4 \cdot \frac{1}{n} + 3 \cdot \frac{1}{n^2}}{{1 + 5 \cdot \frac{1}{n}}}}$ \\
+    $= \lim\limits_{n \rightarrow \infty}{\frac{4 \cdot 0 + 3 \cdot 0}{1 + 5 \cdot 0}}$ \\
+    $= \lim\limits_{n \rightarrow \infty}{\frac{0}{1}} = 0$ \\
+    $\therefore \lim\limits_{n \rightarrow \infty}{\frac{4n + 3}{25 \parens{1 - 5^\frac{4n + 3}{n^2 + 5n}}}} = \lim\limits_{n \rightarrow \infty}{\frac{4n + 3}{25 \parens{1 - 5^0}}}$ \\
+    $= - \infty$
+}{40pt}
+
+\newpage
 
 \question{3}{Algorithms}
 \subquestion{a}{Consider the following algorithm: \\
-    \widebox{        
-        \textbf{Input: } A positive natural number $n$.
-        \begin{enumerate}
-            \item [1.] If $n \ \% \ 3 = 0$, output $n$ and stop. Otherwise, go to Step 2.
-            \item [2.] If $n$ is even, replace $n$ with $n + 1$ and go back to $1.$ Otherwise, go to Step 3.
-            \item [3.] Replace $n$ with $n + 2$ and go to Step 1.
+\widebox{        
+    \textbf{Input: } A positive natural number $n$.
+    \begin{enumerate}
+        \item [1.] If $n \ \% \ 3 = 0$, output $n$ and stop. Otherwise, go to Step 2.
+        \item [2.] If $n$ is even, replace $n$ with $n + 1$ and go back to $1.$ Otherwise, go to Step 3.
+        \item [3.] Replace $n$ with $n + 2$ and go to Step 1.
         \end{enumerate}  
     } \\
     Will this algorithm run forever? Explain why or why not.
 }
+\sol{
+    No this algorithm will not run forever. \\
+    1) Firstly, the alogithm checks if the number is divisible by 3
+    and if it is, it will stop. \\
+    2) If n is not divisible by 3 and is even, it will add 1 to n 
+    to make it odd, then return to step 1. \\
+    3) If n is not divisible by 3 and is odd, it will add 2 to n 
+    to make it odd again, then return to step 1. \\
+    This cycle of the algorithm will always reach a number divisible by 3 
+    because we are either adding 1 or 2 to n. This means that we will cover 
+    all possible values for $n \mod{3}$ (those being 0, 1, 2), meaning the 
+    algorithm will not run forever (as it will end when $n \mod{3} = 0)$.
+}{25pt}
+
+
 \subquestion{b}{Consider two algorithms, called \textbf{Algorithm A} and \textbf{Algorithm B} with the following runtimes:
 \begin{gather*}
     \textbf{AlgorithmASteps}(n) = n^{10} + 4n + \log_{2}(n) \\
@@ -217,27 +303,35 @@
 }
 \subsubquestion{i}{Find the run times for each algorithm for 
 $n = 2$ and $n = 8$.}
+\sol{
+    Alogorith A: \\
+    - n = 2 - $AlgorithmASteps(2) = 2^10 + 4(2) + \log_{2}(2)$ \\
+    - n = 2 - $ = 1024 + 8 + 1 = 1033$ \\
+    - n = 8 - $AlgorithmASteps(8) = 8^10 + 4(8) + \log_{2}(8)$ \\
+    - n = 2 - $ = 1073741824 + 32 + 3 = 1073741859$ \\
+    Algorithm B: \\
+    - n = 2 - $AlgorithmBSteps(2) = 5 \log_{2}(2) + 2^2$ \\
+    - n = 2 - $AlgorithmBSteps(2) = 5 \cdot 1 + 4 = 9$ \\
+    - n = 8 - $AlgorithmBSteps(8) = 5 \log_{2}(8) + 2^8$ \\
+    - n = 8 - $AlgorithmBSteps(8) = 5 \cdot 3 + 256 = 271$
+}{40pt}
+
 \subsubquestion{ii}{Which algorithm is more efficient when 
 $n < 10$?}
+\sol{
+    When $n < 10$, Algorithm B is more efficient. You can see this from the calculations above. for both n = 2 and n = 8, Algorithm B takes significantly fewer steps than Algorithm A.
+    This is because when $n < 10$, the highest power in B is always less than 10,
+     while is A, the highest power is 10, meaning B will be more efficient.
+}{40pt}
+
 \subsubquestion{iii}{Which algorithm is more efficient for very large values of 
 $n$? Explain your answer.}
-
-\newpage
-
-\question{4}{Graphs}
-\noindent In lectures, we looked at complete bipartite graphs. Here, we will look at bipartite graphs that are not necessarily complete. A bipartite graph is a simple graph whose vertex set
-$V$ can be split into two disjoint nonempty sets
-$V_{1}$ and $V_{2}$ for which $V_{1} \cup V_{2} = V$
-so that every edge in the graph connects a vertex in
-$V_{1}$ with a vertex in $V_{2}$.
-\subquestion{a}{Draw two different bipartite graphs, each containing 7 vertices in one set and 2 vertices in another set.}
-\subquestion{b}{Consider the following graph $G$:
-Is $G$ bipartite? Justify your answer either by drawing $G$ as a bipartite graph with two distinct sets of vertices, or by explaining why $G$ cannot be bipartite.}
-\subquestion{c}{San draws a graph and asks Mika if it is bipartite. Mika says the graph is not bipartite because it contains the subgraph, 
-$C_3$. Is Mika correct? Can a graph with $C_3$ as a subgraph be bipartite? Explain your answer.}
-\subquestion{d}{San draws another graph. This time he notices that the graph contains the subgraph 
-$C_4$ and assumes that the graph he has drawn cannot be bipartite. Is he correct? Explain your answers.}
-\subquestion{e}{In general, come up with a rule for determining whether a graph with a subgraph 
-$C_n$ is bipartite. Explain your answer.}
+\sol{
+    For very large values of n, Algorithm A is more efficient. 
+    This is because the highest power of n in Algorithm A is 10, 
+    while in Algorithm B it's n. This means that as n increases,
+    the efficiency of Algorithm B will decrease exponentially.
+    In Big O notation, Algorithm A is $O(n^{10})$, and Algorithm B is $O(2^n)$.
+}{40pt}
 
 \end{document}
