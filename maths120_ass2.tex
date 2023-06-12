@@ -1,0 +1,70 @@
+\documentclass[12pt]{article}
+\title{
+    \textbf{COMPSCI130 — Assignment 3} \\
+    \large{University of Auckland}
+}
+\author{Aidan Webster \qquad aweb904@aucklanduni.ac.nz}
+\date{\today}
+
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{mdframed}
+\usepackage{tocloft}
+\usepackage{ifthen}
+\usepackage{xparse}
+\usepackage{calc}
+\usepackage[nomessages]{fp}
+
+% Short commands for common number systems
+\newcommand{\N}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{R}}
+
+% Shorthand commands for all braces
+\newcommand\set[1]{\left\lbrace #1 \right\rbrace} % Curly braces
+\newcommand\abs[1]{\left| #1 \right|} % Absolute value
+\newcommand\brac[1]{\left[ #1 \right]} % Square brackets
+\newcommand\parens[1]{\left( #1 \right)} % Normal brackets
+
+% Command for solution box
+\DeclareDocumentCommand\sol{ m g } {
+    % #1 - solution
+    % #2 - leftmargin
+     
+    \IfNoValueTF{#2} {
+        \begin{mdframed}
+            \emph{Solution. \\[1pt]} #1
+        \end{mdframed}
+    } {
+        \begin{mdframed}[leftmargin=#2]
+            \emph{\underline{Solution}. \\[1pt]} #1
+        \end{mdframed}
+    }
+}
+
+% Command for proof box
+\DeclareDocumentCommand\prf{ m g } {
+    % #1 - solution
+    % #2 - leftmargin
+
+    \IfNoValueTF{#2} {
+        \begin{mdframed}
+            \begin{proof}[\underline{Proof}]
+                $ $\\[3pt] #1
+            \end{proof}
+        \end{mdframed}
+    } {
+        \begin{mdframed}[leftmargin=#2]
+            \begin{proof}[\underline{Proof}]
+                $ $\\[3pt] #1
+            \end{proof}
+        \end{mdframed}
+    }
+}
+
+\begin{document}
+
+\end{document}
