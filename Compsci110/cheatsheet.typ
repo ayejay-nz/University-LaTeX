@@ -248,3 +248,308 @@ A computer network is made up of computing devices (*nodes/hosts*) and interconn
 Combination of LANs and WANs connected by *routers* that direct message traffic. \
 ISP provides access to the internet, DNS provide addressing information
 - ISPs exist at multiple levels: local, regional, national, international (tier-1 network)
+
+=== Communication Protocols
+*Protocol*: standard set of rules for comminicating \
+*Protocol hierarchy/protocol stack -TCP/IP*: layers of protocols. Physical transmission to end application rules and standards \
+*Internet Society*: makes standards and promote research. Standards evolve over time \
+International agreements make the internet possible
+#image("comm_protocols.png", width: 50%)
+Messaging originates with hosts. Hosts connected to local ISP. Local ISP has internal network that connects to other ISPs, eventually leading to a tier 1 ISP.
+
+==== Physical Layer
+Rules for exchanging binary data across a physical channel.
+- How to know when a bit is present on the line
+- How much time will the bit remain on the line
+- Whether the bit is digital or analog in form
+- What physical quantities represent 0 and 1
+- Shapre of the connector between the computer and the trasmission line
+Create an abstract "bit pipe" used by higher layers
+
+==== Data Link Layer
+Ensures reliable transmission of bits \
+*Error detection and correction*. Notices failures in the transmission and fix them \
+*Framing* determines which bits belong to one message \
+Two parts: Layer 2a - Medium Access Control, Layer 2b - Logical Link Control \
+
+Packets/Frame contains:
+- Markers for start and end of packet (SOP and EOP)
+- Sequence number for packet (e.g. 2 of 5)
+- Packet data
+- Error-checking bits
+- Source and destination MAC addresses
+
+Purpose of the data link layer is to create a _virtual error-free message pipe_
+- Message go in one end and come out the other correct and in the right order
+
+*Medium Access Control Protocols*
+- Rules for communicating on shared lines - who has ownership
+- _Contention-based_ protocol - Ethernet
+    - When a node wants to send a message
+        - Listen to the line and wait until it is free
+        - Begin transmitting as soon as it is free
+        - If a collision results, wait a random amount of time
+        - Repeat
+- Advantage: *distributed*, no master bottleneck
+
+*Logical Link Control Protocols*
+- Rules for _detecting and correcting_ errors
+- *ARQ algorith* (automatic repeat request)
+    - _Sender_
+        - Transmit a packet and what for ACK or time out
+        - If ACK received, go on to next packet
+        - Otherwise, repeat on the current packet
+    - _Receiver_
+        - If no error, return *acknowledgement message (ACK)*
+        - Otherwise, return nothing
+
+==== Network Layer
+- Sometimes called the _Internet Layer_ \
+- Transmit messages across _multiple nodes_ in a network and follows a good faith tranmission model
+- Requirements: 
+    - Standard for _addressing_ all network nodes
+    - _Routing method_ for finding a route from any node to any other node
+- Provides end to end "network delivery service" \
+- Internet network layer: *IP (Internet Protocol)* \
+
+*Addressing* \
+- *Host name*: human-friendly name for node 
+- *IP address*: unique numerical address used by the computer
+- *Domain Name Service (DNS)*: maps host names to IP addresses
+    - Symbolic host name goes to a local DNS server
+    - If it has no record, goes to remote servers until one has the host name and retrieves the IP address
+
+*Routing* \
+- Picking a path through the network from source to destination
+- Seeks the shortest/best path: fastest travel
+- Massive network requires efficient path-seeking
+- Networks are dynamic: nodes come online and go offline all the time - routing must adapt quickly
+
+==== Transport Layer
+- Application to applicatoin, reliable packet delivery \
+- *Port number*: unique identifier for a program/application 
+    - Application types have standard port numbers
+        - Web server: port 80
+        - Domain Name Service: port 42
+        - SMTP, sending email: port 25
+- *TCP (Transport Control Protocol)*
+    - Ensures no errors (retransmit lost packets)
+    - Establishes ordered delivery of packets
+    - _Connection-oriented_ - virtual, direct, quilaty connection between programs
+    - Prioritze reliability over time (uses another version of ARQ algorith)
+    - 20 bytes overhead in the header
+    - e.g. web browsers, email, file transfer
+- *UDP (User Datagram Protocol)*
+    - _Connectionless_
+    - Lacks error detection and flow control
+    - Prioritize time over reliability (fast communication)
+    - 8 bytes overhead in the header
+    - e.g. video streaming, DNS, Voice over IP (VoIP)
+
+==== Application Layer
+- Handles formatted data transmitted between application programs
+#image("eg_application_layer.png", width: 50%)
+*Hypertext Transfer Protocol (HTTP)*
+- Web page/service is identified by unique *URL (Uniform Resource Locator)*
+    - protocol://hostname/page
+    - Multiple protocols: http, mailto, news, ftp
+- Web browser uses TCP to send formatted messages to a web server, and vice versa - hence the connection is established
+- Browser reads protocol (https), extracts host name (and requests IP address from the DNS server)
+- Asks TCP to establish connection with port 80 of the host machine
+- *Request message*: After connection is established, sends "Get" message with page information 
+- *Response message*: Server responds with message containing status code, page contents, and size and indicates the connection closes at the end of the message
+
+*Encapsulation*
+- Each layer adds information called a *header* to the data being passed to it
+- This head contains information the layer needs to perform its job
+- When the packet is received at its destination, the same process is repeated in reverse
+- The packet is *de-encapsulated* and the headers stripped off when it is received by the intended target
+
+*Switch (layer 2)*
+- Ethernet packet is forwarded based on MAC address
+- No involvement of the network layer
+- IP packet remains completely untouched
+
+*Router (layer 3)*
+- The data link layer de-encapsulae the packet, passes the IP packet to network layer for routing
+- IP packet is forwarded based on the IP address
+- No involvment of the layers above the network layer
+- The IP packet is encapsulated again to be transmitted by outgoing interface
+
+=== MTU & MSS
+*MTU (maximum transmission unit)* is the maximum amount of data that can be transmitted across the network. It does NOT include the ethernet headers required to transmit the packet on thernet. The common value of MTU on the internet is *1500 bytes* \
+
+*MSS (maximum segment size)* is only concerned with the size of the payload within each packet. It does NOT include the TCP header or the IP header.
+
+== Security
+_Threats_: Threats online are often more dangerous than threats to physical items. Hackers prefer to attack easily accessible data \
+_Defenses_: Multiple deterrents to attacks
+- *Authentication*: process that establishes the user's identity to the satisfaction of the system
+- *Authorization*: governs what an authenticated user is allowed to do
+- *Encryption*: purpose is to make information meaningless even if someone does manage to steal it
+
+*Malware*: malicious software arriving from the network
+- *Virus*: program embedded within another program or file, replicates itself and attacks other files (carried by infected host file)
+- *Worm*: program that can send copies of itself to other nodes on the network (self-replicating)
+- *Trojan Horse*: program that seems beneficial but hides malicious code within it.
+    - Keystroke logger: records all keys types
+    - Drive-by exploit/drive-by download: trojan horse downloaded by simply visiting and infected website
+- *Denial-of-service (DoS) attack*: directs many computers to try access the same URL at the same time
+    - Clogs the network, prevents legitimate access, and causes the server to crash
+    - Distributed DoS uses thousands of computers 
+        - Uses a *zombie army (botnet)*: many innocent computers infected with malware
+- *Phishing*: obtain sensitive information by impersonating legitimate sources
+    - Many emails: just a few "bites" are enough
+
+*Types of Hackers*
+- _White hats_: security experts and those who work to help protect systems from attackers. Also called "ethical hackers"
+- _Black hats_: individuals or groups who work toward geting around security to steal information, get money, or do other nefarious, immoral, and illegal acts
+- _Grey hats_: do no have malicious intentions. Will find vulnerabilities like White Hats, but without permission to do so
+
+*Authentication*: establishing identity. Requires username and password. OS secures the password file with a *hash function* (one-way encryption) \
+Password file security: no plaintext password stored \
+On login:
+- Read username and password
+- Look up entry for username in a password file
+- Hash input password and compare
+
+_More secure method_
+- Keep password creation time
+- Add creation time to password before hashing
+- Identical passwords won't has to identical values
+
+Other authentication methods:
+- Answer personal information questions
+- Biometric information (fingerprint or retinal scans)
+- One-time password schemes
+    - User enters ID and partial password
+    - System or user device generates last half of the password
+    - Last half of the password is good for only a few seconds
+- *Dual authentication*: temporary code or password is sent to a trusted device
+
+*Salt*
+- Serves three purposes:
+    - Prevents duplicate passwords from being visible in the password file
+    - Greatly increases difficulty of offline _dictionary attacks_
+    - Becomes nearly impossible to find out whether a person with passwords on two or more systems has used the same password on all of them
+
+*Password Attacks*
+- Brute force (guess passwords)
+    - Try common passwords
+    - Try personal references
+    - Try all possible passwords (computationally difficult)
+- Steal password file and use *password-cracking software*
+    - Tries words and word combinations, millions of password possibilites per second
+- *Social engineering*: get a person to tell you their password
+
+*Authorization*: set of permitted actions for each authorizated person \
+
+Operating system maintains *access control lists (or permissions)*
+- Read access
+- Write access
+- Execute access
+- Delete access
+
+*System admin* or *superuser* has universal access and sets up authorization \
+
+*Encryption*
+- One of the risks that data is exposed to in storage or in transit between hosts is eavesdropping
+- *Encryption* and *decryption* convert from plaintext to cyphertext and back again
+- All encryption algorithms use a *key* of some kind to convert the plain text to cypher text
+- The intended recipient of the data uses the cyphertext and their key(s) to decrypt the encrypted data back to plaintext
+- *Cryptography*: science of "secret writing"
+
+=== Simple Encryption Algorithms
+*Caesar Cypher* (or shift cypher)
+- Map characters to others a fixed distance away in the alphabet
+- *Stream cypher*: encode each character as it comes
+- *Substitution cypher*: similar, but implement other mappings
+- Pros: easy and fast, can do character by character.
+- Cons: letter frequency, double letters, still pertain, make it easy to break (only 25 possible keys)
+
+*Weakness of the Monoalphabetic Replacement Cyphers*
+- The cypher text maintains the "fingerprint" of the language
+- We can, therefore use a "Frequency Analysis" table to decypher the text
+
+*Block Cypher*
+- Block of plaintext encoded into a block of cyphertext
+- Each plaintext character in the block contributes to multiple cypher text characters
+- This _destroys the structure_ of the plaintext making it hard to decrypt
+
+- _Matrix-Based Block Cypher_
+    - Groups characters into blocks of "n" characters long
+    - Find invertible n by n matrix, M, and its inverse, M', as keys. This property is waht allows M' to *reverse the effect* of M.
+    - Map characters to letts A -> 1, B -> 2, etc
+    - Wrap values 26 and above back to 0: 26 -> 0, 27 -> 1, etc
+
+Block cyphers produce *scattering (diffusion) of the plaintext* within the cypher text, which is advantageous. \
+
+*Symettric encryption algorithm*
+- A secret key shared by the sender and the receiver
+- Same key is used to encrypt and decrypt
+- _Challenge_: to securely transmit the secret key
+
+*Asymetic encryption algorith (public key encryption)*
+- Uses two keys: public and private
+- Use public key (generally known) to encrypt
+- Use private key (known only to receiver) to decrypt
+
+The three most important *symmetric block cyphers*
++ Data Encryption Standard (DES)
++ Triple DES (3DES)
+    - Improves the security of DES. Requires 3 56-bit keys (which can be thought of as a 168-bit key length) and runs the DES algorithm three times; block size 64 bits
++ Advanced Encryption Standard (AES)
+    - Uses a similar approach, (successive rounds of computations that mix up the data and the key). Longer keys (128, 192, or 256 bits), and larger block size (128 bits)
+
+*DES: Symmetric Encryption Algorithm*
+- Designed for digital data; plaintext (64 bit) is a binary string
+    - Longer plaintext amounts are processed in 64-bit blocks
+- Uses 64-bit binary key (56 bits actually used, remaining bits used for error checking)
+    - From the original 56-bit key, 16 subkeys are generated, one of which is used for each round
+- Sixteen rounds of the same series of manipulations
+- Decryption uses the same algorithm; keys in reverse
+- Fast and effective, but requires shared key
+    - 56 bits is too small for modern technology
+
+- Decryption uses the same algorithm but keys in reverse
+    - Use K16 on the first iteration, K15 on the second, etc
+
+In symmetic encryption systems, such as DES, the shared key must be protected from access by others. This strength of any symmetric cryptographic system rests with the key distribution technique. \
+This is where _asymmetric_ or _public-key cryptography_ comes in handy
+- Two most used public-key algorithms: RSA (Ron Rivest, Adi Shamir, and Len Adleman) and Diffie-Hellman key exchange
+
+*RSA Key Exchange*
+Let $P$: plaintext, $C$: cyphertext, $e$: encryption key, $d$: decryption key \
+We can think of the encryption and decryption processes as being inverses of each other \
+
+*Encrypt*: $P^e mod n = C$ \
+*Decrypt*: $C^d mod n = P$ \
+
+Public key = $(n, e)$, Private key = $d$. Here, $n = p dot.op q$; where $p$ and $q$ are two very large prime numbers. \
+In practice, $n$ is as large as 2048 or 4096 bits \
+Thought $n$ is part of the public key, it is computationally difficult to find two prime factorsr of $n$ in finite time. This is the _strength of RSA_. \
+
+_Steps_
++ Pick 2 large prime numbers, $p$ and $q$
++ Compute $n = p dot.op q$, and $m = (p - 1) dot.op (q - 1)$
++ Chose a large number $e$ at random so that $e$ and $m$ are co-prime, where $1 < e < m$
++ This guarantees that there will be some multiple $d$ of $e$, between $0$ and $m$ such that $(e dot.op d) mod m = 1$.
+
+==== Digital Certificates
+_Challenge_: there is still however, one problem in secret key distribution. How does the client know that the server's public key is actually the *server's* public key and not some _impostor's_ public key? \
+This is where *digital certificates* come in \
+Certificates are issued by well-known _certificate authorities_ (CA's), whose own certificates come pre-installed with most browsers, for example. \
+
+If the server presents the client with its certificate, then the client can use the certificate authority's public key to decrypt the server's public key, and therefore knows that the server's keys are trusted by the certificate issuer. \
+
+==== Web Transmission Security
+- Ecommerce requires secure transmission of names, passowrds, and credit card numbers 
+- Web protocols: *SSL (Secure Sockets Layer)* and *TLS (Transport Layer Security)*
+    - Client-server applications
+    - Server provides certificate of authentication (digital certificate) and server's public key
+    - _Digital Certificate_: issued by trusted third-party certificate authority
+    - Client sends its DES key, encrypted using RSA
+    - Data is send encrypted by the (now shared) DES key
+
+The exchange of setup information between the client and the server, preparatory to exchaning data, is known as a _handshake_.
+#image("web_security.png",  width: 50%)
